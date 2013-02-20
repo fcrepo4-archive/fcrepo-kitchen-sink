@@ -1,0 +1,5 @@
+FOXML code, including primitive parser and ModeShape sequencer, for fcrepo4.
+
+Requires Scala, but all Scala machinery should be prepacked into Maven.
+
+
