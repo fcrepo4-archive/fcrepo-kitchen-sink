@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.fcrepo</groupId>
-    <artifactId>fcrepo</artifactId>
+    <artifactId>fcrepo-kitchen-sink</artifactId>
     <version>4.0-SNAPSHOT</version>
   </parent>
   <artifactId>fcrepo-rss</artifactId>
