@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 target/
 .classpath
 .settings/
@@ -9,3 +10,16 @@ indexes/
 ObjectStore/
 */.cache
 .cache
+=======
+# Build and Release Folders
+bin/
+bin-debug/
+bin-release/
+
+# Other files and folders
+.settings/
+
+# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
+# should NOT be excluded as they contain compiler settings and other important
+# information for Eclipse / Flash Builder.
+>>>>>>> 3a84f6c0f3874846b8a668dda541d33896935895
