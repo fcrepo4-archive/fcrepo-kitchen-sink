@@ -29,16 +29,6 @@
       <artifactId>fcrepo-rss</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.fcrepo</groupId>
-      <artifactId>fcrepo-foxml</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.fcrepo</groupId>
-      <artifactId>fcrepo-glacier</artifactId>
-      <version>${project.version}</version>
-    </dependency>
   </dependencies>
   
   <build>
