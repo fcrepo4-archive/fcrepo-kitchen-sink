@@ -1,8 +1,12 @@
 
 package org.fcrepo.example.cmis;
 
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.chemistry.opencmis.client.api.Folder;
 import org.apache.chemistry.opencmis.client.api.Session;
@@ -10,65 +14,75 @@ import org.apache.chemistry.opencmis.client.bindings.spi.StandardAuthenticationP
 import org.apache.chemistry.opencmis.client.runtime.SessionFactoryImpl;
 import org.apache.chemistry.opencmis.commons.SessionParameter;
 import org.apache.chemistry.opencmis.commons.enums.BindingType;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Element;
 
 
-
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration({"/spring/repo.xml", "/spring/eventing.xml",
+//        "/spring/jms.xml", "/spring/generator.xml", "/spring-test/rest.xml"})
 public class CmisIT {
 
     private Session session;
 
     private static final String BASE_URL = "http://localhost:8080";
 
+    protected static HttpClient client;
+
+    protected static final PoolingClientConnectionManager connectionManager =
+            new PoolingClientConnectionManager();
+
+    static {
+        connectionManager.setMaxTotal(Integer.MAX_VALUE);
+        connectionManager.setDefaultMaxPerRoute(5);
+        connectionManager.closeIdleConnections(3, TimeUnit.SECONDS);
+        client = new DefaultHttpClient(connectionManager);
+    }
+
     @Before
     public void setUp() throws Exception {
+        assertEquals(201,
+                getStatus(new HttpPost(BASE_URL + "/rest/objects/new")));
+
         // default factory implementation
         SessionFactoryImpl factory = SessionFactoryImpl.newInstance();
         Map<String, String> parameter = new HashMap<String, String>();
 
         // user credentials
-        //parameter.put(SessionParameter.USER, user);
-        //parameter.put(SessionParameter.PASSWORD, passw);
+        //parameter.put(SessionParameter.USER, null);
+        //parameter.put(SessionParameter.PASSWORD, null);
 
         // connection settings
         parameter.put(SessionParameter.BINDING_TYPE, BindingType.WEBSERVICES
                 .value());
-        parameter
-                .put(SessionParameter.WEBSERVICES_ACL_SERVICE,
- BASE_URL +
+        parameter.put(SessionParameter.WEBSERVICES_ACL_SERVICE, BASE_URL +
                 "/services/ACLService?wsdl");
-        parameter
-                .put(SessionParameter.WEBSERVICES_DISCOVERY_SERVICE,
- BASE_URL +
+        parameter.put(SessionParameter.WEBSERVICES_DISCOVERY_SERVICE, BASE_URL +
                 "/services/DiscoveryService?wsdl");
-        parameter
-                .put(SessionParameter.WEBSERVICES_MULTIFILING_SERVICE,
+        parameter.put(SessionParameter.WEBSERVICES_MULTIFILING_SERVICE,
                 BASE_URL + "/services/MultiFilingService?wsdl");
-        parameter
-                .put(SessionParameter.WEBSERVICES_NAVIGATION_SERVICE,
+        parameter.put(SessionParameter.WEBSERVICES_NAVIGATION_SERVICE,
                 BASE_URL + "/services/NavigationService?wsdl");
-        parameter
-                .put(SessionParameter.WEBSERVICES_OBJECT_SERVICE,
- BASE_URL +
+        parameter.put(SessionParameter.WEBSERVICES_OBJECT_SERVICE, BASE_URL +
                 "/services/ObjectService?wsdl");
-        parameter
-                .put(SessionParameter.WEBSERVICES_POLICY_SERVICE,
- BASE_URL +
+        parameter.put(SessionParameter.WEBSERVICES_POLICY_SERVICE, BASE_URL +
                 "/services/PolicyService?wsdl");
-        parameter
-                .put(SessionParameter.WEBSERVICES_RELATIONSHIP_SERVICE,
+        parameter.put(SessionParameter.WEBSERVICES_RELATIONSHIP_SERVICE,
                 BASE_URL + "/services/RelationshipService?wsdl");
-        parameter
-                .put(SessionParameter.WEBSERVICES_REPOSITORY_SERVICE,
+        parameter.put(SessionParameter.WEBSERVICES_REPOSITORY_SERVICE,
                 BASE_URL + "/services/RepositoryService?wsdl");
-        parameter
-                .put(SessionParameter.WEBSERVICES_VERSIONING_SERVICE,
+        parameter.put(SessionParameter.WEBSERVICES_VERSIONING_SERVICE,
                 BASE_URL + "/services/VersioningService?wsdl");
 
-        parameter.put(SessionParameter.REPOSITORY_ID, "cmis_repo:default");
+        parameter.put(SessionParameter.REPOSITORY_ID, "repo");
 
         // create session
         session =
@@ -93,6 +107,11 @@ public class CmisIT {
     public void test() {
         Folder root = session.getRootFolder();
         System.out.println("Root: " + root);
+    }
+
+    protected int getStatus(HttpUriRequest method)
+            throws ClientProtocolException, IOException {
+        return client.execute(method).getStatusLine().getStatusCode();
     }
 
 }
