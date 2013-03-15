@@ -34,6 +34,11 @@
       <artifactId>fcrepo-webhooks</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <scope>compile</scope>
+    </dependency>
 
     <!-- CMIS dependencies derived from modeshape-web-cmis-war/pom.xml -->
     <dependency>
@@ -93,11 +98,6 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
       <scope>test</scope>
     </dependency>
     
