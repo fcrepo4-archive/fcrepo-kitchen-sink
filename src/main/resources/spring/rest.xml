@@ -53,6 +53,7 @@
             <bean class="org.fcrepo.generator.DublinCoreGenerator"/>
             <bean class="org.fcrepo.generator.RdfGenerator"/>
             <bean class="org.fcrepo.syndication.RSSPublisher"/>
+            <bean class="org.fcrepo.webhooks.FedoraWebhooks"/>
         </jaxrs:serviceBeans>
         <jaxrs:extensionMappings>
             <entry key="json" value="application/json"/>
