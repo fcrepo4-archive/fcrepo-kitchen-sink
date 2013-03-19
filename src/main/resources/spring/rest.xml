@@ -90,7 +90,13 @@
             <bean class="org.modeshape.web.jcr.rest.output.TextBodyWriter"/>
         </jaxrs:providers>
     </jaxrs:server>
-
+    
+    <jaxrs:server address="/util/corrupt">
+        <jaxrs:serviceBeans>
+            <bean class="org.fcrepo.fixity.resources.FixityCorrupter"/>
+        </jaxrs:serviceBeans>
+	</jaxrs:server>
+	
     <bean name="pathNotFoundExceptionMapper"
         class="org.fcrepo.exceptionhandlers.PathNotFoundExceptionMapper"/>
     <bean name="accessControlExceptionMapper"
@@ -111,4 +117,5 @@
     <bean name="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
         <property name="ignoreNamespaces" value="true"/>
     </bean>
+    
 </beans>
