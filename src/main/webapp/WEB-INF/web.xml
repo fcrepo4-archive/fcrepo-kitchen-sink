@@ -44,7 +44,6 @@
     <param-value>repo</param-value>
   </context-param>
 
-
   <!-- Required parameter for ModeShape REST - should not be modified -->
   <listener>
     <listener-class>org.modeshape.web.jcr.ModeShapeJcrDeployer</listener-class>
@@ -141,6 +140,18 @@
     <servlet-name>cmisbrowser</servlet-name>
     <url-pattern>/browser/*</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>MetricsServlet</servlet-name>
+    <servlet-class>org.fcrepo.metrics.MetricsServlet</servlet-class>
+  </servlet>
+
+
+  <servlet-mapping>
+    <servlet-name>MetricsServlet</servlet-name>
+    <url-pattern>/metrics/*</url-pattern>
+  </servlet-mapping>
+
   <session-config>
     <session-timeout>60</session-timeout>
   </session-config>

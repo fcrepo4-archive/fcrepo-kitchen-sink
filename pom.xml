@@ -94,6 +94,12 @@
       </exclusions>
     </dependency>
 
+    <dependency>
+      <groupId>com.yammer.metrics</groupId>
+      <artifactId>metrics-servlets</artifactId>
+      <version>3.0.0-SNAPSHOT</version>
+    </dependency>
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -105,6 +111,13 @@
     	<groupId>org.fcrepo.fixity</groupId>
     	<artifactId>fcrepo-fixity-corrupter</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>6.0</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
