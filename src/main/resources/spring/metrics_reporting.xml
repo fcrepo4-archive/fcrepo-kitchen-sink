@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <!-- Context that suports event management, including the internal
+  event bus (fedoraInternalEventBus) -->
+
+  <context:annotation-config/>
+
+  <context:property-placeholder/>
+
+
+  <!-- listener that moves JCR Events to the Fedora internal event bus -->
+  <bean id="graphiteService" class="com.yammer.metrics.graphite.Graphite">
+    <constructor-arg>
+      <bean class="java.net.InetSocketAddress">
+        <constructor-arg value="${fcrepo.metrics.host:carbon.hostedgraphite.com}"/>
+        <constructor-arg value="${fcrepo.metrics.port:2003}"/>
+      </bean>
+    </constructor-arg>
+    <constructor-arg>
+      <bean class="javax.net.SocketFactory" factory-method="getDefault" />
+    </constructor-arg>
+  </bean>
+
+  <bean id="reporterFactory"
+        class="org.fcrepo.metrics.ReporterFactory"
+        factory-method="buildDefaultReporterFactory" />
+
+  <bean id="reporter"
+        factory-bean="reporterFactory"
+        factory-method="registerGraphiteReporter">
+    <constructor-arg type="com.yammer.metrics.graphite.Graphite" ref="graphiteService"/>
+    <constructor-arg value="${fcrepo.metrics.prefix:}"/>
+  </bean>
+
+</beans>
