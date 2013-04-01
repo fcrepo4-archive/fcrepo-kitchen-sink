@@ -52,9 +52,33 @@
             <bean class="org.fcrepo.api.FedoraFieldSearch"/>
             <bean class="org.fcrepo.api.FedoraSitemap"/>
             <bean class="org.fcrepo.generator.DublinCoreGenerator"/>
-            <bean class="org.fcrepo.generator.ObjectRdfGenerator" />
+            <bean class="org.fcrepo.generator.ObjectRdfGenerator"/>
             <bean class="org.fcrepo.syndication.RSSPublisher"/>
             <bean class="org.fcrepo.webhooks.FedoraWebhooks"/>
+            <bean class="org.fcrepo.serialization.FedoraObjectsSerialized">
+                <property name="serializers">
+                    <map key-type="java.lang.String"
+                        value-type="org.fcrepo.serialization.FedoraObjectSerializer">
+                        <description>Map from formats to serializers for Fedora
+                            objects</description>
+                        <entry key="bagit">
+                            <bean class="org.fcrepo.serialization.bagit.BagItSerializer">
+                                <property name="prefixes">
+                                    <set>
+                                        <description>The prefixes of JCR properties that will be
+                                            used for serialization into bag-info.txt</description>
+                                        <value type="java.lang.String">fedora</value>
+                                        <value type="java.lang.String">dc</value>
+                                    </set>
+                                </property>
+                            </bean>
+                        </entry>
+                        <entry key="jcrxml">
+                            <bean class="org.fcrepo.serialization.jcrxml.JcrXmlSerializer"/>
+                        </entry>
+                    </map>
+                </property>
+            </bean>
         </jaxrs:serviceBeans>
         <jaxrs:extensionMappings>
             <entry key="json" value="application/json"/>
@@ -91,13 +115,13 @@
             <bean class="org.modeshape.web.jcr.rest.output.TextBodyWriter"/>
         </jaxrs:providers>
     </jaxrs:server>
-    
+
     <jaxrs:server address="/util/corrupt">
         <jaxrs:serviceBeans>
             <bean class="org.fcrepo.fixity.resources.FixityCorrupter"/>
         </jaxrs:serviceBeans>
-	</jaxrs:server>
-	
+    </jaxrs:server>
+
     <bean name="pathNotFoundExceptionMapper"
         class="org.fcrepo.exceptionhandlers.PathNotFoundExceptionMapper"/>
     <bean name="accessControlExceptionMapper"
@@ -118,5 +142,5 @@
     <bean name="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
         <property name="ignoreNamespaces" value="true"/>
     </bean>
-    
+
 </beans>

@@ -35,6 +35,16 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.fcrepo</groupId>
+      <artifactId>fcrepo-object-serialization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.fcrepo</groupId>
+      <artifactId>fcrepo-bagit-object-serialization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <scope>compile</scope>
@@ -42,11 +52,8 @@
 
     <!-- CMIS dependencies derived from modeshape-web-cmis-war/pom.xml -->
     <dependency>
-      <!--
-      <groupId>org.modeshape</groupId>
-      <artifactId>modeshape-web-cmis</artifactId>
-      <version>${modeshape.version}</version>
-      -->
+      <!-- <groupId>org.modeshape</groupId> <artifactId>modeshape-web-cmis</artifactId> 
+        <version>${modeshape.version}</version> -->
       <groupId>org.fcrepo</groupId>
       <artifactId>modeshape-web-cmis</artifactId>
       <version>3.2-SNAPSHOT</version>
@@ -108,9 +115,9 @@
     </dependency>
 
     <dependency>
-    	<groupId>org.fcrepo.fixity</groupId>
-    	<artifactId>fcrepo-fixity-corrupter</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
+      <groupId>org.fcrepo.fixity</groupId>
+      <artifactId>fcrepo-fixity-corrupter</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
     </dependency>
 
     <dependency>
