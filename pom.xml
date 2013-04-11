@@ -45,6 +45,11 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.fcrepo</groupId>
+      <artifactId>fcrepo-sequencer-archive</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <scope>compile</scope>
@@ -149,6 +154,7 @@
           <scanIntervalSeconds>2</scanIntervalSeconds>
           <webApp>
             <contextPath>/</contextPath>
+            <allowDuplicateFragmentNames>true</allowDuplicateFragmentNames>
           </webApp>
         </configuration>
       </plugin>

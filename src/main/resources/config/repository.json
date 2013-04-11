@@ -1,0 +1,51 @@
+{
+    "name" : "repo",
+    "jndiName" : "",
+    "workspaces" : {
+        "predefined" : ["fedora"],
+        "default" : "fedora",
+        "allowCreation" : true
+    },
+    "clustering" : {
+        "clusterName" : "modeshape-cluster"
+    },
+    "query" : {
+        "enabled" : true,
+        "rebuildUponStartup" : "if_missing",
+        "indexStorage" : {
+            "type" : "filesystem",
+            "location" : "${fcrepo.modeshape.index.location:target/indexes}",
+            "lockingStrategy" : "native",
+            "fileSystemAccessType" : "auto"
+        }
+    },
+    "sequencing" : {
+        "removeDerivedContentWithOriginal" : true,
+        "sequencers" : {
+            "ArchiveSequencer" : {
+                "classname" : "org.fcrepo.sequencer.archive.ArchiveSequencer",
+                "pathExpressions":["fedora://(*.zip)/jcr:content[@jcr:data] => ." ],
+                "endpoint" : "http://localhost:8000"
+            }
+        }
+    },
+    "storage" : {
+        "cacheName" : "FedoraRepository",
+        "cacheConfiguration" : "${fcrepo.infinispan.cache_configuration:config/infinispan_configuration.xml}",
+        "binaryStorage" : {
+            "type" : "cache",
+            "dataCacheName" : "FedoraRepository",
+            "metadataCacheName" : "FedoraRepository"
+        }
+    },
+    "security" : {
+        "anonymous" : {
+            "roles" : ["readonly","readwrite","admin"],
+            "useOnFailedLogin" : false
+        },
+        "providers" : [
+            { "classname" : "servlet" }
+        ]
+    },
+    "node-types" : ["fedora-node-types.cnd"]
+}
