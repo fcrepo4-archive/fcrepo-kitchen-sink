@@ -70,7 +70,7 @@
             </bean>
             <bean class="org.fcrepo.syndication.RSSPublisher"/>
             <bean class="org.fcrepo.webhooks.FedoraWebhooks"/>
-            <bean class="org.fcrepo.serialization.FedoraObjectsSerialized">
+            <!--<bean class="org.fcrepo.serialization.FedoraObjectsSerialized">
                 <property name="serializers">
                     <map key-type="java.lang.String"
                         value-type="org.fcrepo.serialization.FedoraObjectSerializer">
@@ -93,7 +93,7 @@
                         </entry>
                     </map>
                 </property>
-            </bean>
+            </bean>-->
         </jaxrs:serviceBeans>
         <jaxrs:extensionMappings>
             <entry key="json" value="application/json"/>
