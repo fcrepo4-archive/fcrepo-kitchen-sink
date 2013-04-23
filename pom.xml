@@ -34,6 +34,17 @@
       <artifactId>fcrepo-webhooks</artifactId>
       <version>${project.version}</version>
     </dependency>
+    
+    <dependency>
+      <groupId>com.sun.jersey.contribs</groupId>
+      <artifactId>jersey-spring</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
     <!-- these following modules are unstable as we transition to Jersey -->
     <!--  
     <dependency>
