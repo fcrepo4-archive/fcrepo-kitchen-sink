@@ -34,6 +34,8 @@
       <artifactId>fcrepo-webhooks</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!-- these following modules are unstable as we transition to Jersey -->
+    <!--  
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-object-serialization</artifactId>
@@ -49,6 +51,7 @@
       <artifactId>fcrepo-sequencer-archive</artifactId>
       <version>${project.version}</version>
     </dependency>
+    -->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
