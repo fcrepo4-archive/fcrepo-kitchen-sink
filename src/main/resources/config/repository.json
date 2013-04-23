@@ -18,8 +18,14 @@
             "lockingStrategy" : "native",
             "fileSystemAccessType" : "auto"
         }
-    },   
-    
+    },
+    "sequencing": {
+        "removeDerivedContentWithOriginal": true,
+        "sequencers": {"ArchiveSequencer": {
+            "classname": "org.fcrepo.sequencer.archive.ArchiveSequencer",
+            "pathExpressions": ["fedora:/uploads/(*)/(*.zip)/jcr:content[@jcr:data] => fedora:/objects/$1/$2"]
+        }}
+    },
     "storage" : {
         "cacheName" : "FedoraRepository",
         "cacheConfiguration" : "${fcrepo.infinispan.cache_configuration:config/infinispan_configuration.xml}",

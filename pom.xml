@@ -57,12 +57,13 @@
       <artifactId>fcrepo-bagit-object-serialization</artifactId>
       <version>${project.version}</version>
     </dependency>
+    -->
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-sequencer-archive</artifactId>
       <version>${project.version}</version>
     </dependency>
-    -->
+    
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
