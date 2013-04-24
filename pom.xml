@@ -45,13 +45,15 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <!-- these following modules are unstable as we transition to Jersey -->
-    <!--  
+     
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-object-serialization</artifactId>
       <version>${project.version}</version>
     </dependency>
+    
+    <!-- the following module is unstable as we transition to Jersey -->
+    <!-- 
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-bagit-object-serialization</artifactId>
