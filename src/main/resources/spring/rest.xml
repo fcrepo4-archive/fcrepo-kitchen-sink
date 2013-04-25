@@ -23,6 +23,16 @@
         <entry key="jcr/xml">
             <bean class="org.fcrepo.serialization.jcrxml.JcrXmlSerializer"/>
         </entry>
+        <entry key="bagit">
+            <bean class="org.fcrepo.serialization.bagit.BagItSerializer">
+                <property name="prefixes">
+                    <set value-type="java.lang.String">
+                        <value>fedora</value>
+                        <value>dc</value>
+                    </set>
+                </property>
+            </bean>
+        </entry>
     </util:map>
 
     <context:component-scan
