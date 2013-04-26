@@ -13,8 +13,7 @@
 
   <context:property-placeholder/>
 
-  <bean id="storagePolicyBean" class="org.fcrepo.binary.PolicyDecisionPoint"  factory-method="getInstance" lazy-init="false" scope="singleton">
-
+  <bean id="storagePolicyBean" class="org.fcrepo.binary.PolicyDecisionPoint">
     <property name="policies">
       <list>
         <bean id="mimeBean" class="org.fcrepo.binary.MimeTypePolicy">
