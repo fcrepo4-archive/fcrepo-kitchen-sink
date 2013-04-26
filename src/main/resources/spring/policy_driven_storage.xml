@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <!-- Context that suports event management, including the internal
+  event bus (fedoraInternalEventBus) -->
+
+  <context:annotation-config/>
+
+  <context:property-placeholder/>
+
+  <bean id="storagePolicyBean" class="org.fcrepo.binary.PolicyDecisionPoint"  factory-method="getInstance">
+
+    <property name="policies">
+      <list>
+        <bean id="mimeBean" class="org.fcrepo.binary.MimeTypePolicy">
+          <constructor-arg value="image/tiff" />
+          <constructor-arg><ref bean="tiff-store" /></constructor-arg>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="tiff-store" class="org.modeshape.jcr.value.binary.NamedHint">
+    <constructor-arg value="tiff-store" />
+  </bean>
+</beans>
