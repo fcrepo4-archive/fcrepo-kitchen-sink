@@ -28,6 +28,11 @@
     </dependency>
     <dependency>
       <groupId>org.fcrepo</groupId>
+      <artifactId>fcrepo-legacy-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-webhooks</artifactId>
       <version>${project.version}</version>
     </dependency>
