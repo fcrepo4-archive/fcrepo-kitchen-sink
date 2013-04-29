@@ -1,5 +1,5 @@
 
-package org.fcrepo.example.cmis;
+package org.fcrepo.integration;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,15 +25,25 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Element;
 
-
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration({"/spring/repo.xml", "/spring/eventing.xml",
-//        "/spring/jms.xml", "/spring/generator.xml", "/spring-test/rest.xml"})
 public class CmisIT {
 
-    private Session session;
+    /**
+     * The server port of the application, set as system property by 
+     * maven-failsafe-plugin.
+     */
+    private static final String SERVER_PORT = System.getProperty("test.port");
 
-    private static final String BASE_URL = "http://localhost:8080";
+    /**
+     * The context path of the application (including the leading "/"), set as 
+     * system property by maven-failsafe-plugin.
+     */
+    private static final String CONTEXT_PATH = System
+            .getProperty("test.context.path");
+
+    protected static final String HOSTNAME = "localhost";
+
+    protected static final String BASE_URL = "http://" + HOSTNAME + ":" +
+            SERVER_PORT;
 
     protected static HttpClient client;
 
@@ -47,10 +57,13 @@ public class CmisIT {
         client = new DefaultHttpClient(connectionManager);
     }
 
+    private Session session;
+
     @Before
     public void setUp() throws Exception {
         assertEquals(201,
-                getStatus(new HttpPost(BASE_URL + "/rest/objects/new")));
+ getStatus(new HttpPost(BASE_URL + CONTEXT_PATH +
+                "/rest/objects/new")));
 
         // default factory implementation
         SessionFactoryImpl factory = SessionFactoryImpl.newInstance();

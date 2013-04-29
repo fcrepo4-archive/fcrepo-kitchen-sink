@@ -13,6 +13,9 @@
   <properties>
     <project_name>fcrepo-kitchen-sink</project_name>
     <opencmis.version>0.7.0</opencmis.version>
+
+    <!-- integration test properties -->
+    <test.context.path>/</test.context.path>
   </properties>
   <dependencies>
     <dependency>
@@ -26,11 +29,13 @@
       <artifactId>fcrepo-rss</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!--
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-legacy-api</artifactId>
       <version>${project.version}</version>
     </dependency>
+    -->
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-webhooks</artifactId>
@@ -151,15 +156,63 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <configuration>
+          <portNames>
+            <portName>test.port</portName>
+            <!-- reserves the stop port for jetty-maven-plugin -->
+            <portName>jetty.port.stop</portName>
+          </portNames>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <configuration>
+          <loginServices>
+            <loginService implementation="org.eclipse.jetty.security.HashLoginService">
+              <name>fcrepo</name>
+              <config>${project.build.directory}/test-classes/jetty-users.properties</config>
+            </loginService>
+          </loginServices>
           <scanIntervalSeconds>2</scanIntervalSeconds>
+          <stopKey>STOP</stopKey>
           <webApp>
-            <contextPath>/</contextPath>
             <allowDuplicateFragmentNames>true</allowDuplicateFragmentNames>
+            <contextPath>${test.context.path}</contextPath>
           </webApp>
         </configuration>
+        <executions>
+          <execution>
+            <id>start-jetty</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+              <goal>start</goal>
+            </goals>
+            <configuration>
+              <connectors>
+                <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                  <port>${test.port}</port>
+                  <maxIdleTime>60000</maxIdleTime>
+                </connector>
+              </connectors>
+              <daemon>true</daemon>
+              <stopPort>${jetty.port.stop}</stopPort>
+            </configuration>
+          </execution>
+          <execution>
+            <id>stop-jetty</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+            <configuration>
+              <stopPort>${jetty.port.stop}</stopPort>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
