@@ -2,8 +2,8 @@ package org.fcrepo.metrics;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.yammer.metrics.MetricRegistry;
-import com.yammer.metrics.json.MetricsModule;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.json.MetricsModule;
 import org.fcrepo.services.RepositoryService;
 
 import javax.servlet.ServletConfig;

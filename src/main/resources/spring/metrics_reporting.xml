@@ -15,7 +15,7 @@
 
 
   <!-- listener that moves JCR Events to the Fedora internal event bus -->
-  <bean id="graphiteService" class="com.yammer.metrics.graphite.Graphite">
+  <bean id="graphiteService" class="com.codahale.metrics.graphite.Graphite">
     <constructor-arg>
       <bean class="java.net.InetSocketAddress">
         <constructor-arg value="${fcrepo.metrics.host:carbon.hostedgraphite.com}"/>
@@ -34,7 +34,7 @@
   <bean id="reporter"
         factory-bean="reporterFactory"
         factory-method="registerGraphiteReporter">
-    <constructor-arg type="com.yammer.metrics.graphite.Graphite" ref="graphiteService"/>
+    <constructor-arg type="com.codahale.metrics.graphite.Graphite" ref="graphiteService"/>
     <constructor-arg value="${fcrepo.metrics.prefix:}"/>
   </bean>
 
