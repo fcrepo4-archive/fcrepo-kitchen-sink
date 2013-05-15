@@ -18,13 +18,9 @@
       <list>
         <bean id="mimeBean" class="org.fcrepo.binary.MimeTypePolicy">
           <constructor-arg value="image/tiff" />
-          <constructor-arg><ref bean="tiff-store" /></constructor-arg>
+          <constructor-arg>tiff-store</constructor-arg>
         </bean>
       </list>
     </property>
-  </bean>
-
-  <bean id="tiff-store" class="org.modeshape.jcr.value.binary.NamedHint">
-    <constructor-arg value="tiff-store" />
   </bean>
 </beans>
