@@ -59,7 +59,7 @@ public class KitchenSinkIT {
     @Test
     public void doASanityCheck() throws IOException {
         assertEquals(200, getStatus(new HttpGet(serverAddress +
-                "/rest/fcr:describe")));
+                "rest/")));
     }
 
     protected int getStatus(final HttpUriRequest method)
