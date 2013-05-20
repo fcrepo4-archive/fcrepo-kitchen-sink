@@ -36,6 +36,6 @@
     </util:map>
 
     <context:component-scan
-        base-package="org.modeshape.web.jcr.rest, org.fcrepo.api, org.fcrepo.legacy, org.fcrepo.serialization, org.fcrepo.generator, org.fcrepo.exceptionhandlers"/>
+        base-package="org.modeshape.web.jcr.rest, org.fcrepo.api, org.fcrepo.legacy, org.fcrepo.serialization, org.fcrepo.responses, org.fcrepo.generator, org.fcrepo.exceptionhandlers"/>
 
 </beans>
