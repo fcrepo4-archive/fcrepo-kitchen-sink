@@ -1,20 +1,22 @@
 package org.fcrepo.metrics;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.json.MetricsModule;
-import org.fcrepo.services.RepositoryService;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
+
+import org.fcrepo.services.MetricsService;
+
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.json.MetricsModule;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 public class MetricsServlet extends HttpServlet {
     public static final String RATE_UNIT = MetricsServlet.class.getCanonicalName() + ".rateUnit";
@@ -30,7 +32,7 @@ public class MetricsServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        this.registry = RepositoryService.getMetrics();
+        this.registry = MetricsService.getMetrics();
 
         final TimeUnit rateUnit = parseTimeUnit(config.getServletContext()
                 .getInitParameter(RATE_UNIT),
