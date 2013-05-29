@@ -9,6 +9,7 @@ indexes/
 ObjectStore/
 */.cache
 .cache
+.idea/
 # Build and Release Folders
 bin/
 bin-debug/
