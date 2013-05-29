@@ -24,7 +24,13 @@
         "sequencers": {"ArchiveSequencer": {
             "classname": "org.fcrepo.sequencer.archive.ArchiveSequencer",
             "pathExpressions": ["fedora:/uploads/(*)/(*.zip)/jcr:content[@jcr:data] => fedora:/objects/$1/$2"]
-        }}
+        },
+            "Image Sequencer" : {
+                "description" : "Images sequencer",
+                "classname" : "org.modeshape.sequencer.image.ImageMetadataSequencer",
+                "pathExpressions" : [ "default://(*.(gif|png|pict|jpg))/jcr:content[@jcr:data]" ]
+            }
+        }
     },
     "storage" : {
         "cacheName" : "FedoraRepository",
@@ -54,5 +60,5 @@
             { "classname" : "servlet" }
         ]
     },
-    "node-types" : ["fedora-node-types.cnd"]
+    "node-types" : ["fedora-node-types.cnd", "org/modeshape/sequencer/image/images.cnd"]
 }

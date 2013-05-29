@@ -120,6 +120,11 @@
       </exclusions>
     </dependency>
 
+    <dependency>
+      <groupId>org.modeshape</groupId>
+      <artifactId>modeshape-sequencer-images</artifactId>
+    </dependency>
+
     <!-- WebDAV -->
     <dependency>
       <groupId>org.modeshape</groupId>
