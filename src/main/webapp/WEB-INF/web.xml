@@ -287,16 +287,18 @@
 
   <!-- END WebDAV support-->
   
+  <!-- BEGIN Metrics -->
   <servlet>
-    <servlet-name>MetricsServlet</servlet-name>
-    <servlet-class>org.fcrepo.metrics.MetricsServlet</servlet-class>
+    <servlet-name>MetricsAdminServlet</servlet-name>
+    <servlet-class>com.codahale.metrics.servlets.AdminServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>MetricsServlet</servlet-name>
+    <servlet-name>MetricsAdminServlet</servlet-name>
     <url-pattern>/metrics/*</url-pattern>
   </servlet-mapping>
-
+  <!-- END Metrics -->
+  
   <session-config>
     <session-timeout>60</session-timeout>
   </session-config>
