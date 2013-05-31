@@ -18,7 +18,7 @@
   <bean id="graphiteService" class="com.codahale.metrics.graphite.Graphite">
     <constructor-arg>
       <bean class="java.net.InetSocketAddress">
-        <constructor-arg value="${fcrepo.metrics.host:carbon.hostedgraphite.com}"/>
+        <constructor-arg value="${fcrepo.metrics.host:localhost}"/>
         <constructor-arg value="${fcrepo.metrics.port:2003}"/>
       </bean>
     </constructor-arg>
