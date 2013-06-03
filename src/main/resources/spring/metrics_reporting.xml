@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="
-    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-  <!-- Context that supports event management, including the internal
-  event bus (fedoraInternalEventBus) -->
+<!-- 
+To enable Metrics reporting to Graphite,
 
-  <context:annotation-config/>
+1) active this Spring profile:
+either pass in -Dspring.profiles.active="metrics" or set an init-param for 
+"spring.profiles.active" with value "metrics" in web.xml 
 
-  <context:property-placeholder/>
+2) set "-Dfcrepo.metrics.host" equal to your Graphite host (defaults to localhost)
 
+-->
+
+<beans profile="metrics" xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+  <!-- Context that supports event management, including the internal event bus (fedoraInternalEventBus) -->
+  <context:annotation-config />
+
+  <context:property-placeholder />
 
   <!-- listener that moves JCR Events to the Fedora internal event bus -->
   <bean id="graphiteService" class="com.codahale.metrics.graphite.Graphite">
     <constructor-arg>
       <bean class="java.net.InetSocketAddress">
-        <constructor-arg value="${fcrepo.metrics.host:localhost}"/>
-        <constructor-arg value="${fcrepo.metrics.port:2003}"/>
+        <constructor-arg value="${fcrepo.metrics.host:localhost}" />
+        <constructor-arg value="${fcrepo.metrics.port:2003}" />
       </bean>
     </constructor-arg>
     <constructor-arg>
@@ -27,15 +35,13 @@
     </constructor-arg>
   </bean>
 
-  <bean id="reporterFactory"
-        class="org.fcrepo.metrics.ReporterFactory"
-        factory-method="buildDefaultReporterFactory" />
+  <bean id="reporterFactory" class="org.fcrepo.metrics.ReporterFactory"
+    factory-method="buildDefaultReporterFactory" />
 
-  <bean id="reporter"
-        factory-bean="reporterFactory"
-        factory-method="registerGraphiteReporter">
-    <constructor-arg type="com.codahale.metrics.graphite.Graphite" ref="graphiteService"/>
-    <constructor-arg value="${fcrepo.metrics.prefix:}"/>
+  <bean id="reporter" factory-bean="reporterFactory" factory-method="registerGraphiteReporter">
+    <constructor-arg type="com.codahale.metrics.graphite.Graphite"
+      ref="graphiteService" />
+    <constructor-arg value="${fcrepo.metrics.prefix:}" />
   </bean>
 
 </beans>
