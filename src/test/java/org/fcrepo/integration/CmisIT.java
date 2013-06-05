@@ -63,7 +63,7 @@ public class CmisIT {
     public void setUp() throws Exception {
         assertEquals(201,
  getStatus(new HttpPost(BASE_URL + CONTEXT_PATH +
-                "/rest/objects/new")));
+                "/rest/objects/fcr:new")));
 
         // default factory implementation
         SessionFactoryImpl factory = SessionFactoryImpl.newInstance();
