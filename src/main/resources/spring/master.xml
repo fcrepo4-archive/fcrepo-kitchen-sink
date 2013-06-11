@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- Master context for the test application. -->
+
+  <import resource="classpath:/spring/eventing.xml"/>
+  <import resource="classpath:/spring/generator.xml"/>
+  <import resource="classpath:/spring/repo.xml"/>
+  <import resource="classpath:/spring/rest.xml"/>
+  <import resource="classpath:/spring/transactions.xml"/>
+  <import resource="classpath:/spring/atom_jms.xml"/>
+  <import resource="classpath:/spring/optional_modules.xml"/>
+  <import resource="classpath:/spring/metrics_reporting.xml"/>
+  <import resource="classpath:/spring/policy_driven_storage.xml"/>
+
+</beans>
