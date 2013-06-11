@@ -62,6 +62,16 @@ public class KitchenSinkIT {
                 "rest/")));
     }
 
+    @Test
+    public void doAnRssSanityCheck() throws IOException {
+        assertEquals(200, getStatus(new HttpGet(serverAddress + "rest/fcr:rss")));
+    }
+
+    @Test
+    public void doWebhooksSanityCheck() throws IOException {
+        assertEquals(200, getStatus(new HttpGet(serverAddress + "rest/fcr:webhooks")));
+    }
+
     protected int getStatus(final HttpUriRequest method)
             throws ClientProtocolException, IOException {
         logger.debug("Executing: " + method.getMethod() + " to " +

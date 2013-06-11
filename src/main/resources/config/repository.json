@@ -34,7 +34,7 @@
     },
     "storage" : {
         "cacheName" : "FedoraRepository",
-        "cacheConfiguration" : "${fcrepo.infinispan.cache_configuration:config/infinispan_configuration.xml}",
+        "cacheConfiguration" : "${fcrepo.infinispan.cache_configuration:config/infinispan/basic/configuration.xml}",
         "binaryStorage" : {
             "type" : "composite",
             "namedStores" : {
