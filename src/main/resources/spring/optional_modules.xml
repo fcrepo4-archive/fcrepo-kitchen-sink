@@ -12,6 +12,6 @@
   <context:annotation-config/>
 
   <context:component-scan
-          base-package="org.fcrepo.syndication, org.fcrepo.webhooks"/>
+          base-package="org.fcrepo.syndication, org.fcrepo.webhooks, org.fcrepo.legacy"/>
 
 </beans>

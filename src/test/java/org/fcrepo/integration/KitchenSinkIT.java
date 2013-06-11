@@ -2,16 +2,22 @@
 package org.fcrepo.integration;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.update.GraphStore;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
+import org.fcrepo.RdfLexicon;
+import org.fcrepo.test.util.TestHelpers;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -63,6 +69,20 @@ public class KitchenSinkIT {
     }
 
     @Test
+    public void shouldContainOptionalServicesLinks() throws IOException {
+        final HttpGet httpGet = new HttpGet(serverAddress + "rest/");
+        final HttpResponse response = client.execute(httpGet);
+
+        assertEquals(200, response.getStatusLine().getStatusCode());
+
+        final GraphStore graphStore = TestHelpers.parseTriples(response.getEntity().getContent());
+
+        assertTrue("expected to find fcr:rss link", graphStore.contains(Node.ANY, Node.createURI(serverAddress + "rest/"), RdfLexicon.HAS_FEED.asNode(),  Node.createURI(serverAddress + "rest/fcr:rss")));
+        assertTrue("expected to find fcr:webhooks link", graphStore.contains(Node.ANY, Node.createURI(serverAddress + "rest/"), RdfLexicon.HAS_SUBSCRIPTION_SERVICE.asNode(),  Node.createURI(serverAddress + "rest/fcr:webhooks")));
+
+    }
+
+    @Test
     public void doAnRssSanityCheck() throws IOException {
         assertEquals(200, getStatus(new HttpGet(serverAddress + "rest/fcr:rss")));
     }
@@ -70,6 +90,11 @@ public class KitchenSinkIT {
     @Test
     public void doWebhooksSanityCheck() throws IOException {
         assertEquals(200, getStatus(new HttpGet(serverAddress + "rest/fcr:webhooks")));
+    }
+
+    @Test
+    public void doV3SanityCheck() throws IOException {
+        assertEquals(200, getStatus(new HttpGet(serverAddress + "rest/v3/describe")));
     }
 
     protected int getStatus(final HttpUriRequest method)
