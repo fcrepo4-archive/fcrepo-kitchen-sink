@@ -31,23 +31,6 @@
     <url-pattern>/rest/*</url-pattern>
   </servlet-mapping>
 
-  <!-- engaging the ModeShape REST API -->
-
-  <context-param>
-    <param-name>org.modeshape.jcr.URL</param-name>
-    <param-value>WEB-INF/classes/config/repository.json</param-value>
-  </context-param>
-
-  <context-param>
-    <param-name>org.modeshape.jcr.RepositoryName</param-name>
-    <param-value>repo</param-value>
-  </context-param>
-
-  <!-- Required parameter for ModeShape REST - should not be modified -->
-  <listener>
-    <listener-class>org.modeshape.web.jcr.ModeShapeJcrDeployer</listener-class>
-  </listener>
-
   <!-- BEGIN CMIS -->
   <listener>
     <listener-class>org.modeshape.cmis.CmisContextListener</listener-class>
