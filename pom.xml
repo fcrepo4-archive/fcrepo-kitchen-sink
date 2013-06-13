@@ -64,11 +64,13 @@
         </exclusion>
       </exclusions>
     </dependency>
+
     <dependency>
-      <groupId>org.fcrepo</groupId>
-      <artifactId>fcrepo-object-serialization</artifactId>
-      <version>${project.version}</version>
+      <groupId>com.sun.jersey.contribs</groupId>
+      <artifactId>jersey-multipart</artifactId>
+      <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-bagit-object-serialization</artifactId>
