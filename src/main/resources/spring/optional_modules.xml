@@ -18,6 +18,6 @@
   </util:set>
 
   <context:component-scan
-          base-package="org.fcrepo.syndication, org.fcrepo.serialization.bagit, org.fcrepo.webhooks, org.fcrepo.legacy"/>
+          base-package="org.fcrepo.syndication, org.fcrepo.serialization.bagit, org.fcrepo.webhooks, org.fcrepo.legacy, org.fcrepo.audit"/>
 
 </beans>

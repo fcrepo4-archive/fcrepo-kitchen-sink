@@ -2,10 +2,23 @@
 <!DOCTYPE configuration>
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>                                                           
-            <pattern>%p %d{HH:mm:ss.SSS} \(%c{0}\) %m%n</pattern>                                                   
+        <encoder>
+            <pattern>%p %d{HH:mm:ss.SSS} \(%c{0}\) %m%n</pattern>
         </encoder>
     </appender>
+    <appender name="HSQLDB" class="ch.qos.logback.classic.db.DBAppender">
+        <connectionSource
+              class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+          <sqlDialect class="ch.qos.logback.core.db.dialect.HSQLDialect"/>
+          <driverClass>org.hsqldb.jdbc.JDBCDriver</driverClass>
+          <url>jdbc:hsqldb:file:/tmp/audit.db;shutdown=true</url>
+          <user>sa</user>
+          <password></password>
+        </connectionSource>
+    </appender>
+    <logger name="org.fcrepo.audit" additivity="false" level="DEBUG">
+        <appender-ref ref="HSQLDB"/>
+    </logger>
     <logger name="org.fcrepo" additivity="false" level="DEBUG">
         <appender-ref ref="STDOUT"/>
     </logger>

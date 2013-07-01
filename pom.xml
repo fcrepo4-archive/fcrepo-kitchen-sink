@@ -193,6 +193,13 @@
       <version>${modeshape.version}</version>
     </dependency>
 
+    <!-- hsqldb for db logging -->
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>2.2.9</version>
+    </dependency>
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.apache.chemistry.opencmis</groupId>
@@ -334,6 +341,47 @@
             </goals>
             <configuration>
               <stopPort>${jetty.port.stop}</stopPort>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>sql-maven-plugin</artifactId>
+        <version>1.5</version>
+
+        <dependencies>
+          <!-- specify the dependent jdbc driver here -->
+          <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.2.9</version>
+          </dependency>
+        </dependencies>
+
+        <!-- common configuration shared by all executions -->
+        <configuration>
+          <driver>org.hsqldb.jdbcDriver</driver>
+          <url>jdbc:hsqldb:file:/tmp/audit.db;shutdown=true</url>
+          <username>sa</username>
+          <password></password>
+          <settingsKey>sensibleKey</settingsKey>
+          <!--all executions are ignored if -Dmaven.test.skip=true-->
+          <skip>${maven.test.skip}</skip>
+        </configuration>
+
+        <executions>
+          <execution>
+            <id>create-schema</id>
+            <phase>process-test-resources</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <autocommit>true</autocommit>
+              <srcFiles>
+                <srcFile>src/main/resources/logback-hsqldb.sql</srcFile>
+              </srcFiles>
             </configuration>
           </execution>
         </executions>

@@ -20,8 +20,9 @@ import org.modeshape.common.logging.Logger;
 import org.modeshape.web.jcr.webdav.ContentMapper;
 
 /**
- * This class is almost entirely borrowed from {@link org.modeshape.web.jcr.webdav.DefaultContentMapper}
- * except for the Fedora-specific behaviors.
+ * This class is almost entirely borrowed from
+ * {@link org.modeshape.web.jcr.webdav.DefaultContentMapper} except for the
+ * Fedora-specific behaviors.
  *
  */
 public class FedoraContentMapper implements ContentMapper {
@@ -60,7 +61,7 @@ public class FedoraContentMapper implements ContentMapper {
 
     private String newFolderPrimaryType;
 
-    private final Logger logger = Logger.getLogger(getClass());
+    private final Logger log = Logger.getLogger(getClass());
 
     @Override
     public void initialize(ServletContext servletContext) {
@@ -76,15 +77,15 @@ public class FedoraContentMapper implements ContentMapper {
         String newContentPrimaryType =
                 getParam(servletContext, INIT_NEW_CONTENT_PRIMARY_TYPE_NAME);
 
-        logger.debug("FedoraContentMapper initial content primary types = " +
+        log.debug("FedoraContentMapper initial content primary types = " +
                 contentPrimaryTypes);
-        logger.debug("FedoraContentMapper initial file primary types = " +
+        log.debug("FedoraContentMapper initial file primary types = " +
                 filePrimaryTypes);
-        logger.debug("FedoraContentMapper initial new folder primary types = " +
+        log.debug("FedoraContentMapper initial new folder primary types = " +
                 newFolderPrimaryType);
-        logger.debug("FedoraContentMapper initial new resource primary types = " +
+        log.debug("FedoraContentMapper initial new resource primary types = " +
                 newResourcePrimaryType);
-        logger.debug("FedoraContentMapper initial new content primary types = " +
+        log.debug("FedoraContentMapper initial new content primary types = " +
                 newContentPrimaryType);
 
         this.contentPrimaryTypes =
@@ -103,10 +104,11 @@ public class FedoraContentMapper implements ContentMapper {
     }
 
     /**
-     * Returns an unmodifiable set containing the elements passed in to this method
+     * Returns an unmodifiable set containing the elements passed to this method
      * 
      * @param elements a set of elements; may not be null
-     * @return an unmodifiable set containing all of the elements in {@code elements}; never null
+     * @return an unmodifiable set containing all  the elements in
+     *    {@code elements}; never null
      */
     private static Set<String> setFor(String... elements) {
         Set<String> set = new HashSet<String>(elements.length);
@@ -116,19 +118,23 @@ public class FedoraContentMapper implements ContentMapper {
     }
 
     /**
-     * Splits a comma-delimited string into an unmodifiable set containing the substrings between the commas in the source string.
-     * The elements in the set will be {@link String#trim() trimmed}.
+     * Splits a comma-delimited string into an unmodifiable set containing the
+     * substrings between the commas in the source string. The elements in the
+     * set will be {@link String#trim() trimmed}.
      * 
-     * @param commaDelimitedString input string; may not be null, but need not contain any commas
-     * @return an unmodifiable set whose elements are the trimmed substrings of the source string; never null
+     * @param commaDelimitedString input string; may not be null, but need not
+     * contain any commas
+     * @return an unmodifiable set whose elements are the trimmed substrings
+     * of the source string; never null
      */
     private static Set<String> split(String commaDelimitedString) {
         return setFor(commaDelimitedString.split("\\s*,\\s*"));
     }
 
     @Override
-    public InputStream getResourceContent(Node node) throws RepositoryException {
-        if (!node.hasNode(CONTENT_NODE_NAME)) return null;
+    public InputStream getResourceContent(Node node)
+        throws RepositoryException {
+        if (!node.hasNode(CONTENT_NODE_NAME)) { return null; }
         return node.getProperty(CONTENT_NODE_NAME + "/" + DATA_PROP_NAME)
                 .getBinary().getStream();
     }
@@ -144,7 +150,7 @@ public class FedoraContentMapper implements ContentMapper {
 
     @Override
     public Date getLastModified(Node node) throws RepositoryException {
-        if (!node.hasNode(CONTENT_NODE_NAME)) return null;
+        if (!node.hasNode(CONTENT_NODE_NAME)) { return null; }
 
         return node.getProperty(CONTENT_NODE_NAME + "/" + MODIFIED_PROP_NAME)
                 .getDate().getTime();
@@ -157,13 +163,15 @@ public class FedoraContentMapper implements ContentMapper {
 
     /**
      * @param node the node to check
-     * @return true if {@code node}'s primary type is one of the types in {@link #filePrimaryTypes}; may not be null
-     * @throws RepositoryException if an error occurs checking the node's primary type
+     * @return true if {@code node}'s primary type is one of the types in
+     * {@link #filePrimaryTypes}; may not be null
+     * @throws RepositoryException if an error occurs checking the node's
+     * primary type
      */
     @Override
     public boolean isFile(Node node) throws RepositoryException {
         for (String nodeType : filePrimaryTypes) {
-            if (node.isNodeType(nodeType)) return true;
+            if (node.isNodeType(nodeType)) { return true; }
         }
 
         return false;
@@ -171,12 +179,14 @@ public class FedoraContentMapper implements ContentMapper {
 
     /**
      * @param node the node to check
-     * @return true if {@code node}'s primary type is one of the types in {@link #contentPrimaryTypes}; may not be null
-     * @throws RepositoryException if an error occurs checking the node's primary type
+     * @return true if {@code node}'s primary type is one of the types in
+     * {@link #contentPrimaryTypes}; may not be null
+     * @throws RepositoryException if an error occurs checking the node's
+     * primary type
      */
     private boolean isContent(Node node) throws RepositoryException {
         for (String nodeType : contentPrimaryTypes) {
-            if (node.isNodeType(nodeType)) return true;
+            if (node.isNodeType(nodeType)) { return true; }
         }
 
         return false;
@@ -184,7 +194,7 @@ public class FedoraContentMapper implements ContentMapper {
 
     @Override
     public void createFile(Node parentNode, String fileName)
-            throws RepositoryException {
+        throws RepositoryException {
         new Datastream(parentNode.getSession(), parentNode.getPath() +
                         "/" + fileName);
 
@@ -192,18 +202,15 @@ public class FedoraContentMapper implements ContentMapper {
 
     @Override
     public void createFolder(Node parentNode, String folderName)
-            throws RepositoryException {
+        throws RepositoryException {
         Node newFolder = parentNode.addNode(folderName, newFolderPrimaryType);
         new FedoraObject(newFolder);
     }
 
     @Override
-    public long
-            setContent(Node parentNode, String resourceName,
-                    InputStream newContent, String contentType,
-                    String characterEncoding) throws RepositoryException,
-                    IOException {
-
+    public long setContent(Node parentNode, String resourceName,
+        InputStream newContent, String contentType, String characterEncoding)
+        throws RepositoryException, IOException {
         Datastream ds = new Datastream(parentNode);
         try {
             ds.setContent(newContent, contentType, null, null, null);
