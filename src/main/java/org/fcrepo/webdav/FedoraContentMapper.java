@@ -244,7 +244,7 @@ public class FedoraContentMapper implements ContentMapper {
 
         Datastream ds = new Datastream(parentNode);
         try {
-            ds.setContent(newContent, contentType, null, null, null);
+            ds.setContent(newContent, contentType, null, null);
         } catch (InvalidChecksumException e) {
             throw new RepositoryException(e.getMessage(), e);
         }
