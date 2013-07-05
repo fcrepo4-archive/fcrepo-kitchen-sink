@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FedoraContentMapper.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">fcrepo-kitchen-sink</a> &gt; <a href="index.html" class="el_package">org.fcrepo.webdav</a> &gt; <span class="el_source">FedoraContentMapper.java</span></div><h1>FedoraContentMapper.java</h1><pre class="source lang-java linenums">/**
+ * Copyright 2013 DuraSpace, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.fcrepo.webdav;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import javax.servlet.ServletContext;
+
+import org.fcrepo.Datastream;
+import org.fcrepo.FedoraObject;
+import org.fcrepo.exception.InvalidChecksumException;
+import org.modeshape.common.logging.Logger;
+import org.modeshape.web.jcr.webdav.ContentMapper;
+
+/**
+ * This class is almost entirely borrowed from
+ * {@link org.modeshape.web.jcr.webdav.DefaultContentMapper} except for the
+ * Fedora-specific behaviors.
+ */
+<span class="nc" id="L42">public class FedoraContentMapper implements ContentMapper {</span>
+
+    public static final String INIT_CONTENT_PRIMARY_TYPE_NAMES =
+            &quot;org.modeshape.web.jcr.webdav.CONTENT_PRIMARY_TYPE_NAMES&quot;;
+
+    public static final String INIT_RESOURCE_PRIMARY_TYPES_NAMES =
+            &quot;org.modeshape.web.jcr.webdav.RESOURCE_PRIMARY_TYPE_NAMES&quot;;
+
+    public static final String INIT_NEW_FOLDER_PRIMARY_TYPE_NAME =
+            &quot;org.modeshape.web.jcr.webdav.NEW_FOLDER_PRIMARY_TYPE_NAME&quot;;
+
+    public static final String INIT_NEW_RESOURCE_PRIMARY_TYPE_NAME =
+            &quot;org.modeshape.web.jcr.webdav.NEW_RESOURCE_PRIMARY_TYPE_NAME&quot;;
+
+    public static final String INIT_NEW_CONTENT_PRIMARY_TYPE_NAME =
+            &quot;org.modeshape.web.jcr.webdav.NEW_CONTENT_PRIMARY_TYPE_NAME&quot;;
+
+    private static final String CONTENT_NODE_NAME = &quot;jcr:content&quot;;
+
+    private static final String DATA_PROP_NAME = &quot;jcr:data&quot;;
+
+    private static final String MODIFIED_PROP_NAME = &quot;jcr:lastModified&quot;;
+
+    private static final String DEFAULT_CONTENT_PRIMARY_TYPES =
+            &quot;nt:resource, mode:resource&quot;;
+
+    private static final String DEFAULT_RESOURCE_PRIMARY_TYPES = &quot;nt:file&quot;;
+
+    private static final String DEFAULT_NEW_FOLDER_PRIMARY_TYPE = &quot;nt:folder&quot;;
+
+    private Collection&lt;String&gt; contentPrimaryTypes;
+
+    private Collection&lt;String&gt; filePrimaryTypes;
+
+    private String newFolderPrimaryType;
+
+<span class="nc" id="L78">    private final Logger logger = Logger.getLogger(getClass());</span>
+
+    @Override
+    public void initialize(ServletContext servletContext) {
+
+<span class="nc" id="L83">        String contentPrimaryTypes =</span>
+                getParam(servletContext, INIT_CONTENT_PRIMARY_TYPE_NAMES);
+<span class="nc" id="L85">        String resourcePrimaryTypes =</span>
+                getParam(servletContext, INIT_RESOURCE_PRIMARY_TYPES_NAMES);
+<span class="nc" id="L87">        String newFolderPrimaryType =</span>
+                getParam(servletContext, INIT_NEW_FOLDER_PRIMARY_TYPE_NAME);
+<span class="nc" id="L89">        String newResourcePrimaryType =</span>
+                getParam(servletContext, INIT_NEW_RESOURCE_PRIMARY_TYPE_NAME);
+<span class="nc" id="L91">        String newContentPrimaryType =</span>
+                getParam(servletContext, INIT_NEW_CONTENT_PRIMARY_TYPE_NAME);
+
+<span class="nc" id="L94">        logger.debug(&quot;FedoraContentMapper initial content primary types = {}&quot;,</span>
+                contentPrimaryTypes);
+<span class="nc" id="L96">        logger.debug(&quot;FedoraContentMapper initial file primary types = {}&quot;,</span>
+                filePrimaryTypes);
+<span class="nc" id="L98">        logger.debug(</span>
+                &quot;FedoraContentMapper initial new folder primary types = {}&quot;,
+                newFolderPrimaryType);
+<span class="nc" id="L101">        logger.debug(</span>
+                &quot;FedoraContentMapper initial new resource primary types = {}&quot;,
+                newResourcePrimaryType);
+<span class="nc" id="L104">        logger.debug(</span>
+                &quot;FedoraContentMapper initial new content primary types = {}&quot;,
+                newContentPrimaryType);
+
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        this.contentPrimaryTypes =</span>
+                split(contentPrimaryTypes != null ? contentPrimaryTypes
+                        : DEFAULT_CONTENT_PRIMARY_TYPES);
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        this.filePrimaryTypes =</span>
+                split(resourcePrimaryTypes != null ? resourcePrimaryTypes
+                        : DEFAULT_RESOURCE_PRIMARY_TYPES);
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        this.newFolderPrimaryType =</span>
+                newFolderPrimaryType != null ? newFolderPrimaryType
+                        : DEFAULT_NEW_FOLDER_PRIMARY_TYPE;
+<span class="nc" id="L117">    }</span>
+
+    protected String getParam(ServletContext servletContext, String name) {
+<span class="nc" id="L120">        return servletContext.getInitParameter(name);</span>
+    }
+
+    /**
+     * Returns an unmodifiable set containing the elements passed in to this
+     * method
+     * 
+     * @param elements
+     *        a set of elements; may not be null
+     * @return an unmodifiable set containing all of the elements in
+     *         {@code elements}; never null
+     */
+    private static Set&lt;String&gt; setFor(String... elements) {
+<span class="nc" id="L133">        Set&lt;String&gt; set = new HashSet&lt;String&gt;(elements.length);</span>
+<span class="nc" id="L134">        set.addAll(Arrays.asList(elements));</span>
+
+<span class="nc" id="L136">        return set;</span>
+    }
+
+    /**
+     * Splits a comma-delimited string into an unmodifiable set containing the
+     * substrings between the commas in the source string. The elements in the
+     * set will be {@link String#trim() trimmed}.
+     * 
+     * @param commaDelimitedString
+     *        input string; may not be null, but need not contain any commas
+     * @return an unmodifiable set whose elements are the trimmed substrings of
+     *         the source string; never null
+     */
+    private static Set&lt;String&gt; split(String commaDelimitedString) {
+<span class="nc" id="L150">        return setFor(commaDelimitedString.split(&quot;\\s*,\\s*&quot;));</span>
+    }
+
+    @Override
+    public InputStream getResourceContent(Node node)
+        throws RepositoryException {
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (!node.hasNode(CONTENT_NODE_NAME)) {</span>
+<span class="nc" id="L157">            return null;</span>
+        }
+<span class="nc" id="L159">        return node.getProperty(CONTENT_NODE_NAME + &quot;/&quot; + DATA_PROP_NAME)</span>
+                .getBinary().getStream();
+    }
+
+    @Override
+    public long getResourceLength(Node node) throws RepositoryException {
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        if (!node.hasNode(CONTENT_NODE_NAME)) {</span>
+<span class="nc" id="L166">            return -1;</span>
+        }
+<span class="nc" id="L168">        return node.getProperty(CONTENT_NODE_NAME + &quot;/&quot; + DATA_PROP_NAME)</span>
+                .getLength();
+    }
+
+    @Override
+    public Date getLastModified(Node node) throws RepositoryException {
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        if (!node.hasNode(CONTENT_NODE_NAME)) {</span>
+<span class="nc" id="L175">            return null;</span>
+        }
+
+<span class="nc" id="L178">        return node.getProperty(CONTENT_NODE_NAME + &quot;/&quot; + MODIFIED_PROP_NAME)</span>
+                .getDate().getTime();
+    }
+
+    @Override
+    public boolean isFolder(Node node) throws RepositoryException {
+<span class="nc bnc" id="L184" title="All 4 branches missed.">        return !isFile(node) &amp;&amp; !isContent(node);</span>
+    }
+
+    /**
+     * @param node
+     *        the node to check
+     * @return true if {@code node}'s primary type is one of the types in
+     *         {@link #filePrimaryTypes}; may not be null
+     * @throws RepositoryException
+     *         if an error occurs checking the node's primary type
+     */
+    @Override
+    public boolean isFile(Node node) throws RepositoryException {
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        for (String nodeType : filePrimaryTypes) {</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">            if (node.isNodeType(nodeType)) {</span>
+<span class="nc" id="L199">                return true;</span>
+            }
+<span class="nc" id="L201">        }</span>
+
+<span class="nc" id="L203">        return false;</span>
+    }
+
+    /**
+     * @param node
+     *        the node to check
+     * @return true if {@code node}'s primary type is one of the types in
+     *         {@link #contentPrimaryTypes}; may not be null
+     * @throws RepositoryException
+     *         if an error occurs checking the node's primary type
+     */
+    private boolean isContent(Node node) throws RepositoryException {
+<span class="nc bnc" id="L215" title="All 2 branches missed.">        for (String nodeType : contentPrimaryTypes) {</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">            if (node.isNodeType(nodeType)) {</span>
+<span class="nc" id="L217">                return true;</span>
+            }
+<span class="nc" id="L219">        }</span>
+
+<span class="nc" id="L221">        return false;</span>
+    }
+
+    @Override
+    public void createFile(Node parentNode, String fileName)
+        throws RepositoryException {
+<span class="nc" id="L227">        new Datastream(parentNode.getSession(), parentNode.getPath() + &quot;/&quot; +</span>
+                fileName);
+
+<span class="nc" id="L230">    }</span>
+
+    @Override
+    public void createFolder(Node parentNode, String folderName)
+        throws RepositoryException {
+<span class="nc" id="L235">        Node newFolder = parentNode.addNode(folderName, newFolderPrimaryType);</span>
+<span class="nc" id="L236">        new FedoraObject(newFolder);</span>
+<span class="nc" id="L237">    }</span>
+
+    @Override
+    public long setContent(Node parentNode, String resourceName,
+                    InputStream newContent, String contentType,
+                    String characterEncoding) throws RepositoryException,
+                IOException {
+
+<span class="nc" id="L245">        Datastream ds = new Datastream(parentNode);</span>
+        try {
+<span class="nc" id="L247">            ds.setContent(newContent, contentType, null, null);</span>
+<span class="nc" id="L248">        } catch (InvalidChecksumException e) {</span>
+<span class="nc" id="L249">            throw new RepositoryException(e.getMessage(), e);</span>
+<span class="nc" id="L250">        }</span>
+
+<span class="nc" id="L252">        return ds.getContentSize();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>
