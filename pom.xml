@@ -4,9 +4,10 @@
   <parent>
     <groupId>org.fcrepo</groupId>
     <artifactId>fcrepo</artifactId>
-    <version>4.0-SNAPSHOT</version>
+    <version>4.0.0-alpha-1</version>
   </parent>
   <artifactId>fcrepo-kitchen-sink</artifactId>
+  <version>4.0-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>fcrepo-kitchen-sink</name>
   <description>fcrepo-kitchen-sink</description>
@@ -21,20 +22,20 @@
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-webapp</artifactId>
-      <version>${project.version}</version>
+      <version>${project.parent.version}</version>
       <type>war</type>
     </dependency>
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-webapp</artifactId>
-      <version>${project.version}</version>
+      <version>${project.parent.version}</version>
       <type>jar</type>
       <classifier>classes</classifier>
     </dependency>
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-rss</artifactId>
-      <version>${project.version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
     
     <!-- If legacy-api is removed, the exclusion on jaxb-api on 
@@ -42,7 +43,7 @@
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-legacy-api</artifactId>
-      <version>${project.version}</version>
+      <version>${project.parent.version}</version>
       <exclusions>
         <!-- Dependency convergence: fcrepo-legacy-api (via velocity) depends on
         commons-lang:2.4, but chemistry-opencmis-server-bindings brings 2.6  -->
@@ -55,7 +56,7 @@
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-webhooks</artifactId>
-      <version>${project.version}</version>
+      <version>${project.parent.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -74,7 +75,7 @@
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-bagit-object-serialization</artifactId>
-      <version>${project.version}</version>
+      <version>${project.parent.version}</version>
       <exclusions>
         <!-- Dependency convergence: fcrepo-jms depends on commons-net:3.1, 
         but bagit brings in 2.0 -->
@@ -86,8 +87,8 @@
     </dependency>
     <dependency>
       <groupId>org.fcrepo</groupId>
-      <artifactId>fcrepo-sequencer-archive</artifactId>
-      <version>${project.version}</version>
+      <artifactId>fcrepo-sequencer-archives</artifactId>
+      <version>${project.parent.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -209,19 +210,19 @@
     <dependency>
       <groupId>org.fcrepo.fixity</groupId>
       <artifactId>fcrepo-fixity-corrupter</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>${project.parent.version}</version>
     </dependency>
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-http-commons</artifactId>
-      <version>${project.version}</version>
+      <version>${project.parent.version}</version>
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
     <dependency>
       <groupId>org.fcrepo</groupId>
       <artifactId>fcrepo-http-api</artifactId>
-      <version>${project.version}</version>
+      <version>${project.parent.version}</version>
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
@@ -340,4 +341,12 @@
       </plugin>
     </plugins>
   </build>
+  
+  <scm>
+    <connection>scm:git:git://github.com/futures/${project_name}.git
+    </connection>
+    <developerConnection>scm:git:git@github.com:futures/${project_name}.git
+    </developerConnection>
+    <url>https://github.com/futures/${project_name}</url>
+  </scm>
 </project>
