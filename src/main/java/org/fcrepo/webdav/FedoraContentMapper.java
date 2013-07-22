@@ -31,8 +31,9 @@ import javax.servlet.ServletContext;
 import org.fcrepo.Datastream;
 import org.fcrepo.FedoraObject;
 import org.fcrepo.exception.InvalidChecksumException;
-import org.modeshape.common.logging.Logger;
 import org.modeshape.web.jcr.webdav.ContentMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class is almost entirely borrowed from
@@ -75,7 +76,7 @@ public class FedoraContentMapper implements ContentMapper {
 
     private String newFolderPrimaryType;
 
-    private final Logger logger = Logger.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public void initialize(ServletContext servletContext) {
