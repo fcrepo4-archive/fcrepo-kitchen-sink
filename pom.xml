@@ -192,6 +192,25 @@
       <artifactId>modeshape-web-jcr-webdav</artifactId>
       <version>${modeshape.version}</version>
     </dependency>
+    
+    <dependency>
+      <groupId>com.github.lookfirst</groupId>
+      <artifactId>sardine</artifactId>
+      <version>5.0</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+        <!-- Dependency convergence: fcrepo-webapp (via fcrepo-jcr) depends 
+          on commons-codec:1.6, but com.github.lookfirst.sardine depends on commons-codec:1.7 -->
+        <exclusion>
+          <groupId>commons-codec</groupId>
+          <artifactId>commons-codec</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
