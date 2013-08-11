@@ -13,10 +13,10 @@
 
   <context:property-placeholder/>
 
-  <bean id="storagePolicyBean" class="org.fcrepo.binary.PolicyDecisionPoint">
+  <bean id="storagePolicyBean" class="org.fcrepo.storage.policy.PolicyDecisionPoint">
     <property name="policies">
       <list>
-        <bean id="mimeBean" class="org.fcrepo.binary.MimeTypePolicy">
+        <bean id="mimeBean" class="org.fcrepo.storage.policy.MimeTypePolicy">
           <constructor-arg value="image/tiff" />
           <constructor-arg value="tiff-store" />
         </bean>

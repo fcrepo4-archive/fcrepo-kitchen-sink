@@ -28,9 +28,9 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.servlet.ServletContext;
 
-import org.fcrepo.Datastream;
-import org.fcrepo.FedoraObject;
-import org.fcrepo.exception.InvalidChecksumException;
+import org.fcrepo.kernel.Datastream;
+import org.fcrepo.kernel.FedoraObject;
+import org.fcrepo.kernel.exception.InvalidChecksumException;
 import org.modeshape.web.jcr.webdav.ContentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
