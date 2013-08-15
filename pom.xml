@@ -358,17 +358,6 @@
         </executions>
       </plugin>
 
-      <!--TODO: Remove failsafe section below (i.e. reinstate integration tests)-->
-      <!--once the OOM issue has been resolved.-->
-      <!--https://www.pivotaltracker.com/story/show/54967722-->
-      <plugin>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.15</version>
-        <configuration>
-          <skipITs>true</skipITs>
-        </configuration>
-      </plugin>
-
     </plugins>
   </build>
   
