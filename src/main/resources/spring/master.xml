@@ -13,6 +13,5 @@
   <import resource="classpath:/spring/optional_modules.xml"/>
   <import resource="classpath:/spring/rest.xml"/>
   <import resource="classpath:/spring/transactions.xml"/>
-  <import resource="classpath:/spring/policy_driven_storage.xml"/>
 
 </beans>
