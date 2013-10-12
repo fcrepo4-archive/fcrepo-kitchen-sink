@@ -3,10 +3,10 @@
   <parent>
     <groupId>org.fcrepo</groupId>
     <artifactId>fcrepo</artifactId>
-    <version>4.0.0-alpha-2-SNAPSHOT</version>
+    <version>4.0.0-alpha-3-SNAPSHOT</version>
   </parent>
   <artifactId>fcrepo-kitchen-sink</artifactId>
-  <version>4.0.0-alpha-2-SNAPSHOT</version>
+  <version>4.0.0-alpha-3-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>fcrepo-kitchen-sink</name>
   <description>fcrepo-kitchen-sink</description>
