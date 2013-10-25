@@ -184,6 +184,14 @@
     <dependency>
       <groupId>org.modeshape</groupId>
       <artifactId>modeshape-sequencer-images</artifactId>
+      <exclusions>
+        <!-- Dependency convergence: jena (via fcrepo-webapp) depends 
+          on xercesImpl:2.11.0, but modeshape-sequencer-images depends on xercesImpl:2.8.1 -->
+        <exclusion>
+          <groupId>xerces</groupId>
+          <artifactId>xercesImpl</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- WebDAV -->
