@@ -292,6 +292,7 @@
             <portName>test.port</portName>
             <!-- reserves the stop port for jetty-maven-plugin -->
             <portName>jetty.port.stop</portName>
+            <portName>jms.port</portName>
           </portNames>
         </configuration>
       </plugin>
@@ -329,6 +330,11 @@
             <systemProperty>
               <name>fcrepo.activemq.dir</name>
               <value>${project.build.directory}/active-mq</value>
+            </systemProperty>
+
+            <systemProperty>
+              <name>jms.port</name>
+              <value>${jms.port}</value>
             </systemProperty>
 
           </systemProperties>
