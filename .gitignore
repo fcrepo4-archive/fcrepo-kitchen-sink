@@ -14,3 +14,6 @@ ObjectStore/
 bin/
 bin-debug/
 bin-release/
+overlays/
+fcrepo4-data/
+*~
